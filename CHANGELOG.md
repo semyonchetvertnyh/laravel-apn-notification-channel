@@ -2,6 +2,13 @@
 
 All notable changes will be documented in this file.
 
+## 1.0 - 2020-02-23
+
+- Add support for Laravel 6.0
+- Add support of Certificate-based authentication
+- Use Pushok client v0.10
+- Fix bug when badge is zero
+
 ## 0.1.5 - 2018-02-19
 
 - Add support for Laravel 5.8

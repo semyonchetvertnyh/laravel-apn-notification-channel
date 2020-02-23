@@ -1,4 +1,4 @@
-# APNs (.p8) notifications channel for Laravel 5.8
+# APNs (.p8) notifications channel for Laravel 6
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/semyonchetvertnyh/laravel-apn-notification-channel.svg?style=flat-square)](https://packagist.org/packages/semyonchetvertnyh/laravel-apn-notification-channel)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
@@ -8,7 +8,7 @@
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/semyonchetvertnyh/laravel-apn-notification-channel/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/semyonchetvertnyh/laravel-apn-notification-channel/?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/semyonchetvertnyh/laravel-apn-notification-channel.svg?style=flat-square)](https://packagist.org/packages/semyonchetvertnyh/laravel-apn-notification-channel)
 
-This package makes it easy to send notifications with Laravel 5.8 to iOS using the new APNs HTTP/2 protocol with token-based (JWT with p8 private key).
+This package makes it easy to send notifications with Laravel 6 to iOS using the new APNs HTTP/2 protocol with token-based (JWT with p8 private key).
 
 ## Contents
 
@@ -37,7 +37,7 @@ This package makes it easy to send notifications with Laravel 5.8 to iOS using t
 
 ## Requirements
 
-* PHP >= 7.0
+* PHP >= 7.2
 * lib-curl >= 7.46.0 (with http/2 support enabled)
 * lib-openssl >= 1.0.2e 
 
