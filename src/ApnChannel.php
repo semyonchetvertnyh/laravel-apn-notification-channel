@@ -2,14 +2,14 @@
 
 namespace SemyonChetvertnyh\ApnNotificationChannel;
 
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Notifications\Notification;
 use Pushok\Client;
+use Pushok\Notification as PushokNotification;
 use Pushok\Payload;
 use Pushok\Payload\Alert;
-use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Support\Arrayable;
-use Pushok\Notification as PushokNotification;
-use SemyonChetvertnyh\ApnNotificationChannel\Exceptions\InvalidPayloadException;
 use SemyonChetvertnyh\ApnNotificationChannel\Exceptions\CouldNotSendNotification;
+use SemyonChetvertnyh\ApnNotificationChannel\Exceptions\InvalidPayloadException;
 
 class ApnChannel
 {
@@ -91,12 +91,12 @@ class ApnChannel
         $payload = Payload::create()
             ->setAlert($this->alert($message));
 
-        if ($message->isContentAvailable()) {
-            $payload->setContentAvailability($message->isContentAvailable());
+        if ($isContentAvailable = $message->isContentAvailable()) {
+            $payload->setContentAvailability($isContentAvailable);
         }
 
-        if ($message->isContentAvailable()) {
-            $payload->setMutableContent($message->hasMutableContent());
+        if ($hasMutableContent = $message->hasMutableContent()) {
+            $payload->setMutableContent($hasMutableContent);
         }
 
         if ($message->badge) {
@@ -111,7 +111,7 @@ class ApnChannel
             $payload->setCategory($message->category);
         }
 
-        if ($message->threadId) {
+        if (! is_null($message->threadId)) {
             $payload->setThreadId($message->threadId);
         }
 
