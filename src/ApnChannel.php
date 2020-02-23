@@ -99,7 +99,7 @@ class ApnChannel
             $payload->setMutableContent($hasMutableContent);
         }
 
-        if ($message->badge) {
+        if (! is_null($message->badge)) {
             $payload->setBadge($message->badge);
         }
 
