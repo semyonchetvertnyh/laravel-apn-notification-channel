@@ -30,10 +30,10 @@ This package makes it easy to send notifications with Laravel 5.8 to iOS using t
 
 - [X] Uses new Apple APNs HTTP/2 connection
 - [X] Supports JWT-based authentication
+- [X] Supports Certificate-based authentication
 - [X] Supports new iOS 10 features such as Collapse IDs, Subtitles and Mutable Notifications
 - [X] Uses concurrent requests to APNs
 - [X] Tested and working in APNs production environment
-- [ ] Supports Certificate-based authentication
 
 ## Requirements
 
@@ -63,17 +63,36 @@ If you're installing the package in Laravel 5.4 or lower, you must import the se
 
 Add the credentials to your `config/broadcasting.php`:
 
+If you are using JWT-based authentication:
+
 ```php
 // config/broadcasting.php
 'connections' => [
     ...
     'apn' => [
+        'driver' => 'jwt',
         'is_production' => env('APP_ENV') === 'production',
         'key_id' => env('APN_KEY_ID'), // The Key ID of the p8 file (available at https://developer.apple.com/account/ios/authkey/)
         'team_id' => env('APN_TEAM_ID'), // The Team ID of your Apple Developer Account (available at https://developer.apple.com/account/#/membership/)
         'app_bundle_id' => env('APN_APP_BUNDLE_ID'), // The Bundle ID of your application. For example, "com.company.application"
         'private_key_path' => env('APN_PRIVATE_KEY', storage_path('apns-private-key.p8')),
         'private_key_secret' => env('APN_PRIVATE_KEY_SECRET'),
+    ],
+    ...
+],
+```
+
+If you are using Certificate-based authentication:
+
+```php
+// config/broadcasting.php
+'connections' => [
+    ...
+    'apn' => [
+        'driver' => 'certificate',
+        'is_production' => env('APP_ENV') === 'production',
+        'certificate_path' => env('APN_CERTIFICATE_PATH', storage_path('apns-certificate.pem')),
+        'certificate_secret' => env('APN_CERTIFICATE_SECRET'),
     ],
     ...
 ],
