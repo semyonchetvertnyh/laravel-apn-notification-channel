@@ -53,13 +53,11 @@ class ApnChannel
 
         $responses = $this->client->push();
 
-        foreach ($responses as $response) {
-            if ($response->getStatusCode() !== 200) {
-                throw CouldNotSendNotification::make(
-                    $response->getErrorDescription() ?: $response->getReasonPhrase(), $response->getStatusCode()
-                )->withResponse($response);
-            }
-        }
+        ApnsResponseCollection::make($responses)
+            ->onlyUnsuccessful()
+            ->unlessEmpty(function (ApnsResponseCollection $responses) {
+                throw CouldNotSendNotification::withUnsuccessful($responses);
+            });
     }
 
     /**

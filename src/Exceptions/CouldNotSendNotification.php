@@ -2,47 +2,66 @@
 
 namespace SemyonChetvertnyh\ApnNotificationChannel\Exceptions;
 
+use Exception;
 use Pushok\ApnsResponseInterface;
+use SemyonChetvertnyh\ApnNotificationChannel\ApnsResponseCollection;
 
-class CouldNotSendNotification extends \Exception
+class CouldNotSendNotification extends Exception
 {
     /**
-     * @var \Pushok\ApnsResponseInterface
+     * @var \SemyonChetvertnyh\ApnNotificationChannel\ApnsResponseCollection|\Pushok\ApnsResponseInterface[]
      */
-    protected $response;
+    protected $responses;
 
     /**
-     * Create an instance of exception.
+     * Create an instance of exception attaching responses.
      *
-     * @param  string  $message
-     * @param  int  $errorCode
-     * @return static
+     * @param  \SemyonChetvertnyh\ApnNotificationChannel\ApnsResponseCollection|\Pushok\ApnsResponseInterface[]  $responses
+     * @return $this
      */
-    public static function make($message, $errorCode)
+    public static function withUnsuccessful(ApnsResponseCollection $responses)
     {
-        return new static($message, $errorCode);
+        $message = $responses->map(function (ApnsResponseInterface $response) {
+            return $response->getErrorDescription()
+                ?? $response->getReasonPhrase()
+                ?? $response->getErrorReason();
+        })->implode('; ');
+
+        return (new static($message))
+            ->setResponses($responses);
     }
 
     /**
-     * Attach the response.
+     * Attach the responses.
      *
-     * @param  \Pushok\ApnsResponseInterface  $response
+     * @param  \SemyonChetvertnyh\ApnNotificationChannel\ApnsResponseCollection|\Pushok\ApnsResponseInterface[]  $responses
      * @return $this
      */
-    public function withResponse(ApnsResponseInterface $response)
+    protected function setResponses(ApnsResponseCollection $responses)
     {
-        $this->response = $response;
+        $this->responses = $responses;
 
         return $this;
     }
 
     /**
-     * Get a response.
+     * Get the responses collection.
+     *
+     * @return \SemyonChetvertnyh\ApnNotificationChannel\ApnsResponseCollection|\Pushok\ApnsResponseInterface[]
+     */
+    public function getResponses()
+    {
+        return $this->responses;
+    }
+
+    /**
+     * Get a first response.
      *
      * @return \Pushok\ApnsResponseInterface
+     * @deprecated Use getResponses() instead.
      */
     public function getResponse()
     {
-        return $this->response;
+        return $this->responses[0] ?? null;
     }
 }
