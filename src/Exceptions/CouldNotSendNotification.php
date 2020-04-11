@@ -25,7 +25,7 @@ class CouldNotSendNotification extends Exception
             return $response->getErrorDescription()
                 ?? $response->getReasonPhrase()
                 ?? $response->getErrorReason();
-        })->implode('; ');
+        })->unique()->implode('; ');
 
         return (new static($message))
             ->setResponses($responses);
